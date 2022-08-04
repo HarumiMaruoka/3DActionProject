@@ -1,3 +1,8 @@
+//*********************************************
+// 概　要：装備グループデータ
+// 作成者：ta.kusumoto
+// 作成日：2022/08/04
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -8,36 +13,23 @@ using UnityEngine.UI;
 public class EquipGroupData
 {
     private const string _playerPrefsKey = "EQUIP_DATA";
-    private static EquipData _instance;
-    private EquipData[] _equipDatas = new EquipData[Constants.MAX_EQUIP_SLOT];
+    private static EquipGroupData _instance;
+
+    // 装備データリスト
+    [SerializeField] private List<EquipData> _equipDatas = new List<EquipData>();
 
     // シングルトン
-    public static EquipData Instance
+    public static EquipGroupData Instance
     {
         get
         {
             if(_instance == null) {
-                _instance = PlayerPrefs.HasKey(_playerPrefsKey) ? JsonUtility.FromJson<EquipData>(PlayerPrefs.GetString(_playerPrefsKey)) : new EquipData();
+                _instance = PlayerPrefs.HasKey(_playerPrefsKey) ? JsonUtility.FromJson<EquipGroupData>(PlayerPrefs.GetString(_playerPrefsKey)) : new EquipGroupData();
             }
             return _instance;
         }
     }
     private EquipGroupData(){}
-
-    public void Add(GameObject equip)
-    {
-        var conroller = equip.GetComponent<EquipController>();
-        var model = conroller.EquipModel;
-    }
-
-    // 対象の装備データを取得する
-    public EquipData GetEquip(int commandID)
-    {
-        return _equipDatas.FirstOrDefault(x => x.Id == commandID);
-    }
-
-    // 装備データ一覧を取得
-    public EquipData[] EquipDatas { get => _equipDatas.ToArray(); }
 
     // JSON化してPlayerPrefsに保存
     public void Save()
@@ -47,15 +39,52 @@ public class EquipGroupData
         PlayerPrefs.Save();
     }
 
+    // 装備追加
+    public void AddEquip(int commandID, EquipModel model)
+    {
+        var equipData = GetEqupData(commandID);
+        if (equipData == null) {
+            equipData = new EquipData(commandID, model.EquipID, model.EquipIcon, model.EquipName);
+            _equipDatas.Add(equipData);
+            return;
+        }
+        equipData.CommandID = commandID;
+        equipData.EquipID = model.EquipID;
+        equipData.EquipIcon = model.EquipIcon;
+        equipData.EquipName = model.EquipName;
+    }
+
+    // 指定したIDで装備データを取得する
+    public EquipData GetEqupData(int CommandID)
+    {
+        return _equipDatas.FirstOrDefault(x => x.CommandID == CommandID);
+    }
+
+    // 装備データを一括で取得
+    public EquipData[] EquipDatas
+    {
+        get { return _equipDatas.ToArray(); }
+    }
+
     [Serializable]
     public class EquipData
     {
-        private int _id;
-        private Image _icon;
-        private string _name;
+        [SerializeField] private int _cmdID;
+        [SerializeField] private int _equipID;
+        [SerializeField] private Sprite _equipIcon;
+        [SerializeField] private string _equipName;
 
-        public int Id { get => _id; }
-        public Image Icon { get => _icon; }
-        public string Name { get => _name; }
+        public EquipData(int cmdID, int equipId, Sprite equipIcon, string equipName)
+        {
+            _cmdID = cmdID;
+            _equipID = equipId;
+            _equipIcon = equipIcon;
+            _equipName = equipName;
+        }
+
+        public int CommandID { get => _cmdID; set => _cmdID = value; }
+        public int EquipID { get => _equipID; set => _equipID = value; }
+        public Sprite EquipIcon { get => _equipIcon; set => _equipIcon = value; }
+        public string EquipName { get => _equipName; set => _equipName = value; }
     }
 }

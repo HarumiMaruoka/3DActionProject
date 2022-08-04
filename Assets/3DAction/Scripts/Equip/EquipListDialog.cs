@@ -25,7 +25,7 @@ public class EquipListDialog : MonoBehaviour
         // 装備リスト分インスタンス生成
         EquipEntity entity = Resources.Load<EquipEntity>("ScriptableObject/EquipList");
         foreach (var equip in entity._equipList) {
-            EquipController controller = Instantiate(_equipPrefab, _content, false);
+            var controller = Instantiate(_equipPrefab, _content, false);
             controller.Initialize(equip);
         }
 

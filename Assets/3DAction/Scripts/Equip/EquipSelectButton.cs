@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectEquip : MonoBehaviour
+public class EquipSelectButton : MonoBehaviour
 {
     [SerializeField] private Image _icon;
     [SerializeField] private Text _name;

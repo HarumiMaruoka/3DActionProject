@@ -22,10 +22,11 @@ public class EquipWindowManager : MonoBehaviour
         // 各種ダイアログの初期化
         _equipSettingDialog.Initialize();
         _equipListDialog.Initialize();
-        // ボタン押下時の処理
+        // 各種コマンドボタン押下時の処理
         foreach(var button in _buttons) {
             button.onClick.AddListener(ToggleEquipListDialog);
         }
+        // リストアイテム押下時の処理
         foreach(var button in _equipListDialog.SelectedListItems) {
             button.onClick.AddListener(SetEquipInfo);
         }

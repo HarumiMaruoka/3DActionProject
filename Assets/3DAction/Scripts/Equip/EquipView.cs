@@ -10,8 +10,8 @@ using UnityEngine.UI;
 
 public class EquipView : MonoBehaviour
 {
-    [SerializeField] Image _viewIcon;
-    [SerializeField] Text _viewName;
+    [SerializeField] private Image _viewIcon;
+    [SerializeField] private Text _viewName;
     
     //*******************************
     // •`‰æˆ—

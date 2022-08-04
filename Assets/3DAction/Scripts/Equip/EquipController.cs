@@ -1,8 +1,8 @@
-/// <summary>
-/// 概　要：装備管理者
-/// 作成者：ta.kusumoto
-/// 作成日：2022/08/04
-/// </summary>
+//*********************************************
+// 概　要：装備管理者
+// 作成者：ta.kusumoto
+// 作成日：2022/08/04
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

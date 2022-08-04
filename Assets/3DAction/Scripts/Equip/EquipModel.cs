@@ -9,9 +9,9 @@ using UnityEngine;
 
 public class EquipModel : MonoBehaviour
 {
-    int _equipID;
-    Sprite _equipIcon;
-    string _equipName;
+    private int _equipID;
+    private Sprite _equipIcon;
+    private string _equipName;
 
     public EquipModel(EquipInfo info)
     {
