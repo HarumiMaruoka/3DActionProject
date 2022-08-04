@@ -1,3 +1,8 @@
+//*********************************************
+// 概　要：汎用シングルトン
+// 作成者：ta.kusumoto
+// 作成日：2022/08/04
+
 using System;
 using System.Collections;
 using System.Collections.Generic;

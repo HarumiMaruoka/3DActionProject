@@ -1,11 +1,12 @@
+//*********************************************
+// 概　要：装備設定画面管理者
+// 作成者：ta.kusumoto
+// 作成日：2022/08/04
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-//*********************************************
-// 装備設定画面管理者
 public class EquipSettingDialog : MonoBehaviour
 {
     [SerializeField] private Sprite _initIcon;  // 初期アイコン

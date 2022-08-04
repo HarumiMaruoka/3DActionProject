@@ -1,11 +1,14 @@
+//*********************************************
+// 概　要：装備一覧管理者
+// 作成者：ta.kusumoto
+// 作成日：2022/08/04
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-//*********************************************
-// 装備一覧管理者
+
 public class EquipListDialog : MonoBehaviour
 {
     [SerializeField] private EquipController _equipPrefab;
