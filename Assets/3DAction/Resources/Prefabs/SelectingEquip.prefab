@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -223,6 +223,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b50a5e1fca122498340cd8c5a114ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isMain: 0
   _commandID: 0
   _icon: {fileID: 1261862740459646764}

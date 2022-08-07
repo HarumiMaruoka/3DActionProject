@@ -40,18 +40,16 @@ public class EquipGroupData
     }
 
     // 装備追加
-    public void AddEquip(int commandID, EquipModel model)
+    public void AddEquip(int commandID, int equipID)
     {
         var equipData = GetEqupData(commandID);
         if (equipData == null) {
-            equipData = new EquipData(commandID, model.EquipID, model.EquipIcon, model.EquipName);
+            equipData = new EquipData(commandID, equipID);
             _equipDatas.Add(equipData);
             return;
         }
         equipData.CommandID = commandID;
-        equipData.EquipID = model.EquipID;
-        equipData.EquipIcon = model.EquipIcon;
-        equipData.EquipName = model.EquipName;
+        equipData.EquipID = equipID;
     }
 
     // 指定したIDで装備データを取得する
@@ -71,20 +69,14 @@ public class EquipGroupData
     {
         [SerializeField] private int _cmdID;
         [SerializeField] private int _equipID;
-        [SerializeField] private Sprite _equipIcon;
-        [SerializeField] private string _equipName;
 
-        public EquipData(int cmdID, int equipId, Sprite equipIcon, string equipName)
+        public EquipData(int cmdID, int equipID)
         {
             _cmdID = cmdID;
-            _equipID = equipId;
-            _equipIcon = equipIcon;
-            _equipName = equipName;
+            _equipID = equipID;
         }
 
         public int CommandID { get => _cmdID; set => _cmdID = value; }
         public int EquipID { get => _equipID; set => _equipID = value; }
-        public Sprite EquipIcon { get => _equipIcon; set => _equipIcon = value; }
-        public string EquipName { get => _equipName; set => _equipName = value; }
     }
 }

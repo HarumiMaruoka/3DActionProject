@@ -6,12 +6,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class EquipController : MonoBehaviour
 {
-    [SerializeField] EquipView _equipView;  // 見かけ(view)に関することを操作
-    EquipModel _equipModel;                 // データ(model)に関することを操作
+    [SerializeField] private EquipView _equipView;  // 見かけ(view)に関することを操作
+    EquipModel _equipModel;                         // データ(model)に関することを操作
 
     //****************************
     // 初期化
@@ -19,6 +20,19 @@ public class EquipController : MonoBehaviour
     {
         _equipModel = new EquipModel(info);
         _equipView.Draw(_equipModel);
+    }
+
+    //****************************
+    // ナビゲーションの接続
+    public void NavigationConnect(Button prev, Button next)
+    {
+        var navigation = gameObject.GetComponent<Button>().navigation;
+        navigation.mode = Navigation.Mode.Explicit;
+
+        navigation.selectOnUp = prev;
+        navigation.selectOnDown = next;
+
+        gameObject.GetComponent<Button>().navigation = navigation;
     }
 
     //****************************

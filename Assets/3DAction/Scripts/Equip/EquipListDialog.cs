@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 public class EquipListDialog : MonoBehaviour
@@ -24,17 +25,39 @@ public class EquipListDialog : MonoBehaviour
     {
         // 装備リスト分インスタンス生成
         EquipEntity entity = Resources.Load<EquipEntity>("ScriptableObject/EquipList");
+        EquipController prevEquip = null;
         foreach (var equip in entity._equipList) {
             var controller = Instantiate(_equipPrefab, _content, false);
             controller.Initialize(equip);
         }
 
+        // ボタンの経路設定
         _selectedListItems = GetComponentsInChildren<Button>();
+        for (int i = 0; i < _selectedListItems.Length; ++i) {
+            Button prev = null, next = null;
+            var controller = _selectedListItems[i].GetComponent<EquipController>();
+            if(i == 0) {
+                next = _selectedListItems[i + 1];
+            }else if(i == _selectedListItems.Length - 1) {
+                prev = _selectedListItems[i - 1];
+            }else{
+                prev = _selectedListItems[i - 1];
+                next = _selectedListItems[i + 1];
+            }
+            controller.NavigationConnect(prev, next);
+        }
     }
 
     // 装備一覧の表示/非表示を切り替える
     public void Toggle()
     {
         gameObject.SetActive(!gameObject.activeSelf);
+    }
+
+    private void OnEnable()
+    {
+        // 初期選択ボタンの再指定
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_selectedListItems[0].gameObject);
     }
 }

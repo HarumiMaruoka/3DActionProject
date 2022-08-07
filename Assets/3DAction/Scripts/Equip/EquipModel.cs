@@ -15,9 +15,9 @@ public class EquipModel : MonoBehaviour
 
     public EquipModel(EquipInfo info)
     {
-        _equipID = info._id;
-        _equipIcon = info._icon;
-        _equipName = info._name;
+        _equipID = info.EquipID;
+        _equipIcon = info.EquipIcon;
+        _equipName = info.EquipName;
     }
 
     public int EquipID { get => _equipID; }

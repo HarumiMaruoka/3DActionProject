@@ -342,6 +342,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1060369029}
     m_Modifications:
+    - target: {fileID: 1261862740521863971, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1261862740521863971, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1261862740521864156, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1301,6 +1309,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093e26f0f474d5246be1f1134d4e23ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _equipClose: {fileID: 0}
+  _settingDialog: {fileID: 0}
 --- !u!224 &798372242 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1261862740521864156, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
@@ -1483,6 +1493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093e26f0f474d5246be1f1134d4e23ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _equipClose: {fileID: 0}
+  _settingDialog: {fileID: 0}
 --- !u!114 &875898827
 MonoBehaviour:
   m_ObjectHideFlags: 0

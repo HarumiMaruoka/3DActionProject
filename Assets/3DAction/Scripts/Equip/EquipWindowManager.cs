@@ -15,8 +15,6 @@ public class EquipWindowManager : MonoBehaviour
     [SerializeField] private EquipListDialog _equipListDialog;              // 装備一覧ウィンドウ
     [SerializeField] private List<Button> _buttons = new List<Button>();    // ボタンリスト(コマンド)
 
-    private Button[] _selectListItem;
-
     private void Start()
     {
         // 各種ダイアログの初期化
@@ -35,7 +33,6 @@ public class EquipWindowManager : MonoBehaviour
     // 装備一覧ウィンドウ開閉する
     private void ToggleEquipListDialog()
     {
-        Debug.Log("装備一覧ウィンドウを開閉します");
         var commandObject = EventSystem.current.currentSelectedGameObject;
         _equipSettingDialog.SetCommandInfo(commandObject);
         _equipListDialog.Toggle();
@@ -48,5 +45,6 @@ public class EquipWindowManager : MonoBehaviour
         var selectObject = EventSystem.current.currentSelectedGameObject;
         _equipSettingDialog.SetEquipInfo(selectObject);
         _equipListDialog.Toggle();
+        _equipSettingDialog.EnableSelectedButton();
     }
 }

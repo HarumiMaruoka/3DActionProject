@@ -6,28 +6,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class EquipSettingDialog : MonoBehaviour
 {
-    [SerializeField] private Sprite _initIcon;  // 初期アイコン
-    private EquipSelectButton _selectedButton;  // 選択コマンド
+    [SerializeField] private Sprite _initIcon;          // 初期アイコン
+    [SerializeField] private GameObject _initSelect;    // 初期選択
+    private EquipSelectButton _selectedButton;          // 選択コマンド
 
     //*********************************************
     // 初期化
     public void Initialize()
     {
+        // 初期ボタン選択
+        EventSystem.current.SetSelectedGameObject(_initSelect);
+
         // 一旦全スロットを初期化
         for (int i = 0; i < Constants.MAX_EQUIP_SLOT; ++i) {
             SetEquipInfoImpl(i, -1, _initIcon, "");
         }
+
         // 情報があるスロットのみ更新
         var datas = EquipGroupData.Instance.EquipDatas;
+        if(datas.Length == 0) { return; }
+
         var selectButtons = GetComponentsInChildren<EquipSelectButton>();
+        var entity = Resources.Load<EquipEntity>("ScriptableObject/EquipList");
         foreach (var data in datas) {
-            selectButtons[data.CommandID].Icon.sprite = data.EquipIcon;
-            selectButtons[data.CommandID].Name.text = data.EquipName;
-            SetEquipInfoImpl(data.CommandID, data.EquipID, data.EquipIcon, data.EquipName);
+            foreach (var equip in entity._equipList) {
+                if (equip.EquipID != data.EquipID) { continue; }
+
+                selectButtons[data.CommandID].Icon.sprite = equip.EquipIcon;
+                selectButtons[data.CommandID].Name.text = equip.EquipName;
+                SetEquipInfoImpl(data.CommandID, equip.EquipID, equip.EquipIcon, equip.EquipName);
+            }
         }
+    }
+
+    //*********************************************
+    // 選択したボタンを表示する
+    public void EnableSelectedButton()
+    {
+        EventSystem.current.SetSelectedGameObject(_selectedButton.gameObject);
     }
 
     //*********************************************
@@ -47,9 +67,10 @@ public class EquipSettingDialog : MonoBehaviour
         _selectedButton.Icon.sprite = model.EquipIcon;
         _selectedButton.Name.text = model.EquipName;
 
+        // 装備情報記憶
         MemoryEquipInfo(_selectedButton.CommandID, model);
 
-        // 情報設定(データ共有用)
+        // 情報設定(別シーン共有用)
         SetEquipInfoImpl(_selectedButton.CommandID, model.EquipID, model.EquipIcon, model.EquipName);
     }
 
@@ -58,7 +79,7 @@ public class EquipSettingDialog : MonoBehaviour
     private void MemoryEquipInfo(int commandID, EquipModel model)
     {
         // データをJSONに覚えさせる
-        EquipGroupData.Instance.AddEquip(commandID, model);
+        EquipGroupData.Instance.AddEquip(commandID, model.EquipID);
         EquipGroupData.Instance.Save();
     }
 
