@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackPattern2 : MonoBehaviour
+public class Old_AttackPattern2 : MonoBehaviour
 {
     /// <summary> 射撃のインターバル </summary>
     float _fireOneInterval = -1;

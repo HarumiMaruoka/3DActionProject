@@ -5,55 +5,65 @@ using UnityEngine;
 /// <summary> 全ての武器の基底クラス </summary>
 public class WeaponBase : MonoBehaviour
 {
-    protected void InitializeWeapons()
+    public enum WeaponID
     {
+        WeaponID_00,
 
+        End_WeaponID
     }
 
-    /// <summary> この武器の攻撃時関数を、PlayerAttackクラスのデリゲートに登録する。 </summary>
-    protected virtual void SignUp_OnAttackDelegate_ThisWeapon(int fireOneOrTow)
+    /// <summary>
+    /// この武器の実行方法 : 
+    /// trueの場合、押下時に実行する。
+    /// falseの場合、押下中ずっと実行する。
+    /// </summary>
+    protected bool _isPressType;
+
+    protected bool _isMainWeapon;
+
+    /// <summary> 初期化処理。 : オーバーライド可 </summary>
+    protected virtual void Init(bool pressType, bool isMainWeapon)
     {
-        if (fireOneOrTow == 1)
+        _isPressType = pressType;
+        _isMainWeapon = isMainWeapon;
+    }
+
+    /// <summary> 武器変更処理。 : オーバーライド可 </summary>
+    protected virtual void ChangeWeapon()
+    {
+        // 実行方法と武器タイプを基にデリゲート変数に処理を代入する。
+        if (_isPressType)
         {
-            PlayerAttack.ActivationFire1 += Activation_ThisWeapon;
-            PlayerAttack.FinishFire1 += Finish_ThisWeapon;
-        }
-        else if (fireOneOrTow == 2)
-        {
-            PlayerAttack.ActivationFire2 += Activation_ThisWeapon;
-            PlayerAttack.FinishFire2 += Finish_ThisWeapon;
+            if (_isMainWeapon)
+            {
+                PlayerAttack.On_Fire1ButtonDown = OnFire_ThisWeapon;
+                PlayerAttack.On_Fire1Button = null;
+            }
+            else
+            {
+                PlayerAttack.On_Fire2ButtonDown = OnFire_ThisWeapon;
+                PlayerAttack.On_Fire2Button = null;
+            }
         }
         else
         {
-            Debug.LogError("不正な値です。");
+            if (_isMainWeapon)
+            {
+
+                PlayerAttack.On_Fire1ButtonDown = null;
+                PlayerAttack.On_Fire1Button = OnFire_ThisWeapon;
+            }
+            else
+            {
+                PlayerAttack.On_Fire2ButtonDown = null;
+                PlayerAttack.On_Fire2Button = OnFire_ThisWeapon;
+            }
         }
     }
 
-    /// <summary> この武器の攻撃終了時関数を、PlayerAttackクラスのデリゲートから削除する </summary>
-    protected virtual void Delegate_OnAttackDelegate_ThisWeapon(int fireOneOrTow)
-    {
-        if (fireOneOrTow == 1)
-        {
-            PlayerAttack.ActivationFire1 += Activation_ThisWeapon;
-            PlayerAttack.FinishFire1 += Finish_ThisWeapon;
-        }
-        else if (fireOneOrTow == 2)
-        {
-            PlayerAttack.ActivationFire2 += Activation_ThisWeapon;
-            PlayerAttack.FinishFire2 += Finish_ThisWeapon;
-        }
-        else
-        {
-            Debug.LogError("不正な値です。");
-        }
-    }
 
-    protected virtual void Activation_ThisWeapon()
-    {
-
-    }
-
-    protected virtual void Finish_ThisWeapon()
+    /// <summary> FireButton押下時に実行すべき関数。 : オーバーライド可 </summary>
+    protected virtual void OnFire_ThisWeapon()
     {
 
     }

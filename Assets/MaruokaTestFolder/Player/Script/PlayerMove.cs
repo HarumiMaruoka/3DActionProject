@@ -61,12 +61,6 @@ public class PlayerMove : MonoBehaviour
             speed = Input.GetButton("Dash") ? 2 : 1;
         }
         transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, _rotationSpeed * Time.deltaTime);
-        //ローテーションのxとzを0に強制する
-        Quaternion adjustmenta = transform.rotation;
-        adjustmenta.x = 0f;
-        adjustmenta.z = 0f;
-        transform.rotation = adjustmenta;
-
 
         //速度を与える
         newVelocity.y = 0;
