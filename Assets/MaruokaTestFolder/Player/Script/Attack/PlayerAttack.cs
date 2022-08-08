@@ -2,161 +2,122 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> プレイヤーの攻撃を管理するクラス </summary>
+/// <summary> 攻撃処理を担当するコンポーネント </summary>
+/// いろいろ作成したがこれで行こうと思う。
 public class PlayerAttack : MonoBehaviour
 {
-    //info : このクラスでは、基本的にキーボード入力を受け取り、
-    //       攻撃可能であれば、アニメーションを再生し、アニメーションイベントから実際の攻撃処理を行う。
+    //<***************** メンバー変数 *****************>//
 
-    //<===== このクラスで使用する変数 =====>//
-    /// <summary> 攻撃開始処理 </summary>
-    public static event System.Action ActivationFire1;
-    /// <summary> 攻撃終了処理 </summary>
-    public static event System.Action FinishFire1;
+    [Header("確認用 : 現在装備しているメイン装備のID"), SerializeField] int _currentlyEquippedMainWeaponID;
+    [Header("確認用 : 現在装備しているサブ装備のID"), SerializeField] int _currentlyEquippedSubWeaponID;
+    [Header("確認用 : メインウエポンで攻撃するかを表す真偽値"), SerializeField] bool _isAttackMainWeaponID;
+    [Header("確認用 : サブウエポンで攻撃するかを表す真偽値"), SerializeField] bool _isAttackSubWeaponID;
 
-    /// <summary> 攻撃開始処理 </summary>
-    public static event System.Action ActivationFire2;
-    /// <summary> 攻撃終了処理 </summary>
-    public static event System.Action FinishFire2;
+    [Header("InputManager < ButtonName > : Fire1ボタンの名前"), SerializeField] string _fire1ButtonName= "Fire1";
+    [Header("InputManager < ButtonName > : Fire2ボタンの名前"), SerializeField] string _fire2ButtonName= "Fire2";
 
-    /// <summary> 現在装備しているメインウェポンのID </summary>
-    [Header("現在装備しているメインウェポンのID : 確認用"), SerializeField] int _mainWeaponID = 0;
-    /// <summary> 現在装備しているサブウェポンのID </summary>
-    [Header("現在装備しているサブウェポンのID : 確認用"), SerializeField] int _subWeaponID = 0;
+    [Header("Animator Parameters < ParameterName > : 現在装着しているメインウエポンのID int Parameter Name"), SerializeField] string _animParameterName_int_MainWeaponID = "MainWeaponID";
+    [Header("Animator Parameters < ParameterName > : 現在装着しているサブウエポンのID   int Parameter Name"), SerializeField] string _animParameterName_int_SubWeaponID = "SubWeaponID";
+    [Header("Animator Parameters < ParameterName > : 攻撃するかどうかを表すメインウエポンの真偽値 bool Parameter Name"), SerializeField] string _animParameterName_bool_MainWeaponName = "IsFire1";
+    [Header("Animator Parameters < ParameterName > : 攻撃するかどうかを表すサブウエポンのの真偽値 bool Parameter Name"), SerializeField] string _animParameterName_bool_SubWeaponName = "IsFire2";
 
-    /// <summary> 左クリック攻撃が可能かどうか </summary>
-    [Header("左クリック攻撃が可能かどうか : 確認用"), SerializeField] bool _isFireOne;
-    /// <summary> 右クリック攻撃が可能かどうか </summary>
-    [Header("右クリック攻撃が可能かどうか : 確認用"), SerializeField] bool _isFireTow;
-    /// <summary> 自身にアタッチされているアニメーター </summary>
+    /// <summary> Fire1押下時に実行するデリゲート変数。 </summary>
+    public static System.Action On_Fire1ButtonDown;
+    /// <summary> Fire2押下時に実行するデリゲート変数。 </summary>
+    public static System.Action On_Fire2ButtonDown;
+
+    /// <summary> Fire1押下中ずっと実行するデリゲート変数。 </summary>
+    public static System.Action On_Fire1Button;
+    /// <summary> Fire2押下中ずっと実行するデリゲート変数。 </summary>
+    public static System.Action On_Fire2Button;
+
+    /// <summary> 自身にアタッチされているAnimatorComponent </summary>
     Animator _animator;
 
-    //<===== インスペクタから設定すべき値 =====>
-    [Header("アニメーターのパラメータの名前 : メインウエポンの int Parameter Name"), SerializeField] string _animParameterName_int_MainWeaponID = "MainWeaponID";
-    [Header("アニメーターのパラメータの名前 : サブウエポンの   int Parameter Name"), SerializeField] string _animParameterName_int_SubWeaponID = "SubWeaponID";
-    [Header("アニメーターのパラメータの名前 : メインウエポンの bool Parameter Name"), SerializeField] string _animParameterName_bool_MainWeaponName = "Fire1";
-    [Header("アニメーターのパラメータの名前 : サブウエポンの   bool Parameter Name"), SerializeField] string _animParameterName_bool_SubWeaponName = "Fire2";
+    /// <summary> Fire1押下を検知する変数 : 押下時のみtrue </summary>
+    bool _inputFire1ButtonDown;
+    /// <summary> Fire2押下を検知する変数 : 押下時のみtrue </summary>
+    bool _inputFire2ButtonDown;
+    /// <summary> Fire1押下を検知する変数 : 押下中ずっとtrue </summary>
+    bool _inputFire1Button;
+    /// <summary> Fire2押下を検知する変数 : 押下中ずっとtrue </summary>
+    bool _inputFire2Button;
 
+    //<***************** メンバー関数 *****************>//
+
+    //<***************** Unityメッセージ *****************>//
     void Start()
     {
-        _animator = GetComponent<Animator>();
+        Init();
     }
-
     void Update()
     {
-        AttackFireOne();
-        AttackFireTow();
+        Input_FireButton();
+        Update_Attack();
+        Update_AttackAnim();
     }
 
-    /// <summary> 左クリック時の挙動 </summary>
-    void AttackFireOne()
+    //<***************** publicメソッド *****************>//
+
+    /// <summary> 着用しているメイン装備のIDを設定する。 </summary>
+    /// <param name="value"> 新しいID </param>
+    public void Set_CurrentlyEquippedMainWeaponID(int value)
     {
-        //入力があり 、かつ、 攻撃可能であれば攻撃する
-        if (Input.GetButtonDown("Fire1") && _isFireOne)
-        {
-            Debug.Log("実行！");
-            //アニメーションに現在装備している武器のIDを渡す。
-            _animator.SetInteger(_animParameterName_int_MainWeaponID, _mainWeaponID);
-            //アニメーションを再生
-            _animator.SetBool(_animParameterName_bool_MainWeaponName, _isFireOne);
-        }
-        else if (_isFireOne && Input.GetButtonUp("Fire1"))
-        {
-            Debug.Log("aaa");
-            _animator.SetBool(_animParameterName_bool_MainWeaponName, !_isFireOne);
-        }
+        _currentlyEquippedMainWeaponID = value;
+    }
+    /// <summary> 着用しているサブ装備のIDを設定する。 </summary>
+    /// <param name="value"> 新しいID </param>
+    public void Set_CurrentlyEquippedSubWeaponID(int value)
+    {
+        _currentlyEquippedSubWeaponID = value;
     }
 
-    /// <summary> 右クリック時の挙動 </summary>
-    void AttackFireTow()
+    //<***************** privateメソッド *****************>//
+
+    /// <summary> 初期化処理 </summary>
+    void Init()
     {
-        //攻撃処理
-        if (Input.GetButtonDown("Fire2") && _isFireTow)
-        {
-            //アニメーションに現在装備している武器のIDを渡す。
-            _animator.SetInteger(_animParameterName_int_SubWeaponID, _subWeaponID);
-            //アニメーションを再生
-            _animator.SetBool(_animParameterName_bool_SubWeaponName, _isFireTow);
-        }
-        //後始末
-        else if (_isFireTow && Input.GetButtonUp("Fire2"))
-        {
-            _animator.SetBool(_animParameterName_bool_SubWeaponName, !_isFireTow);
-        }
+        //コンポーネントを取得
+        _animator = GetComponent<Animator>();
+    }
+    /// <summary> 入力処理 </summary>
+    void Input_FireButton()
+    {
+        _inputFire1ButtonDown = Input.GetButtonDown(_fire1ButtonName);
+        _inputFire2ButtonDown = Input.GetButtonDown(_fire2ButtonName);
+        _inputFire1Button = Input.GetButton(_fire1ButtonName);
+        _inputFire2Button = Input.GetButton(_fire2ButtonName);
     }
 
-    /// <summary> 現在装備しているメインウェポンのIDを設定する。 </summary>
-    /// <param name="id"> 設定するID </param>
-    public void Set_MainWeaponID(int id)
+    /// <summary> 攻撃の更新処理 </summary>
+    void Update_Attack()
     {
-        _mainWeaponID = id;
-    }
-
-    /// <summary> 現在装備しているサブウェポンのID </summary>
-    /// <param name="id"> 設定するID </param>
-    public void Set_SubWeaponID(int id)
-    {
-        _subWeaponID = id;
-    }
-
-    //<===== 以下の関数は全て、アニメーションイベントから呼び出す関数。 =====>//
-    /// <summary> 攻撃開始時の処理 </summary>
-    void OnAttack(int attackType)
-    {
-        //攻撃不可にする
-        if (attackType == 1)
+        if (_inputFire1ButtonDown)//Fire1押下時のみ実行
         {
-            _isFireOne = false;
+            if(On_Fire1ButtonDown!=null) On_Fire1ButtonDown();
         }
-        else if (attackType == 2)
+        if (_inputFire2ButtonDown)//Fire2押下時のみ実行
         {
-            _isFireTow = false;
+            if (On_Fire2ButtonDown != null) On_Fire2ButtonDown();
+        }
+
+        if (_inputFire1Button)//Fire1押下中ずっと実行
+        {
+            if (On_Fire1Button != null) On_Fire1Button();
+        }
+        if (_inputFire2Button)//Fire2押下中ずっと実行
+        {
+            if (On_Fire2Button != null) On_Fire2Button();
         }
     }
-
-    /// <summary> 攻撃可能にする。 </summary>
-    void OffAttack(int attackType)
+    /// <summary> アニメーションパラメータに値をセットする。 </summary>
+    void Update_AttackAnim()
     {
-        //攻撃可能にする
-        if (attackType == 1)
-        {
-            _isFireOne = true;
-        }
-        else if (attackType == 2)
-        {
-            _isFireTow = true;
-        }
-    }
-
-    /// <summary> 攻撃発動 </summary>
-    void ActivationAttack_Fire1()
-    {
-        //デリゲートに登録された
-        //攻撃開始関数を呼び出す。
-        ActivationFire1();
-    }
-
-    /// <summary> 攻撃終了 </summary>
-    void FinishAttack_Fire1()
-    {
-        //デリゲートに登録された
-        //攻撃終了関数を呼び出す。
-        FinishFire1();
-    }
-
-    /// <summary> 攻撃発動 </summary>
-    void ActivationAttack_Fire2()
-    {
-        //デリゲートに登録された
-        //攻撃開始関数を呼び出す。
-        ActivationFire2();
-    }
-
-    /// <summary> 攻撃終了 </summary>
-    void FinishAttack_Fire2()
-    {
-        //デリゲートに登録された
-        //攻撃終了関数を呼び出す。
-        FinishFire2();
+        //装備IDを設定する。
+        _animator.SetInteger(_animParameterName_int_MainWeaponID, _currentlyEquippedMainWeaponID);
+        _animator.SetInteger(_animParameterName_int_SubWeaponID, _currentlyEquippedSubWeaponID);
+        //攻撃アニメーションに遷移するかどうかの値を設定する。
+        _animator.SetBool(_animParameterName_bool_MainWeaponName, _inputFire1ButtonDown);
+        _animator.SetBool(_animParameterName_bool_SubWeaponName, _inputFire2ButtonDown);
     }
 }

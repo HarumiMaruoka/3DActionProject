@@ -430,6 +430,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectMain3
       objectReference: {fileID: 0}
+    - target: {fileID: 1261862740521864157, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6393425966323225181, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: _isMain
       value: 1
@@ -449,26 +453,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 428077951587727419, guid: 252227b0aec104d48ae5477fa5dac247, type: 3}
   m_PrefabInstance: {fileID: 1238337352}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &368674892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 368674891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23e59aff90fb60d479e2e47bdbb5fe2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mainWeaponID: 1
-  _subWeaponID: 1
-  _isFireOne: 1
-  _isFireTow: 1
-  _animParameterName_int_MainWeaponID: MainWeaponID
-  _animParameterName_int_SubWeaponID: SubWeaponID
-  _animParameterName_bool_MainWeaponName: IsFire1
-  _animParameterName_bool_SubWeaponName: IsFire2
 --- !u!114 &368674893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +483,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 428077951588213761, guid: 252227b0aec104d48ae5477fa5dac247, type: 3}
   m_PrefabInstance: {fileID: 1238337352}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &368674906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368674891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c8cfdc3f6522f14bad49d4f0b2087b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentlyEquippedMainWeaponID: 0
+  _currentlyEquippedSubWeaponID: 0
+  _isAttackMainWeaponID: 0
+  _isAttackSubWeaponID: 0
+  _fire1ButtonName: Fire1
+  _fire2ButtonName: Fire2
+  _animParameterName_int_MainWeaponID: MainWeaponID
+  _animParameterName_int_SubWeaponID: SubWeaponID
+  _animParameterName_bool_MainWeaponName: IsFire1
+  _animParameterName_bool_SubWeaponName: IsFire2
 --- !u!1 &383777450
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,6 +633,10 @@ PrefabInstance:
     - target: {fileID: 1261862740521864157, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: m_Name
       value: SelectMain1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1261862740521864157, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6393425966323225181, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: _isMain
@@ -1130,6 +1140,10 @@ PrefabInstance:
     - target: {fileID: 1261862740521864157, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: m_Name
       value: SelectMain0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1261862740521864157, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6393425966323225181, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: _isMain
@@ -2085,6 +2099,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2640834683466930030, guid: 252227b0aec104d48ae5477fa5dac247, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 252227b0aec104d48ae5477fa5dac247, type: 3}
 --- !u!1 &1269823054
@@ -2509,7 +2527,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1493712601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.019244164, y: 2.971384, z: -4.5}
+  m_LocalPosition: {x: -0.024785856, y: 2.971384, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2943,6 +2961,10 @@ PrefabInstance:
     - target: {fileID: 1261862740521864157, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: m_Name
       value: SelectMain2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1261862740521864157, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6393425966323225181, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
       propertyPath: _isMain
@@ -3420,6 +3442,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Camera_XBox_GamePadControl
       objectReference: {fileID: 0}
+    - target: {fileID: 4650642337846966367, guid: f4495bd12ae08bb46b3f42de9e35e7f3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5743176144325173746, guid: f4495bd12ae08bb46b3f42de9e35e7f3, type: 3}
       propertyPath: m_Follow
       value: 
@@ -3430,7 +3456,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079297569584290586, guid: f4495bd12ae08bb46b3f42de9e35e7f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4658684
+      value: 0.46032673
       objectReference: {fileID: 0}
     - target: {fileID: 9079297569584290586, guid: f4495bd12ae08bb46b3f42de9e35e7f3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3483,7 +3509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1415769627214983005, guid: c0beee9ee57869d4985ac6c0b37b307e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4658684
+      value: 0.46042296
       objectReference: {fileID: 0}
     - target: {fileID: 1415769627214983005, guid: c0beee9ee57869d4985ac6c0b37b307e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3532,6 +3558,10 @@ PrefabInstance:
     - target: {fileID: 3255980898995047448, guid: c0beee9ee57869d4985ac6c0b37b307e, type: 3}
       propertyPath: m_Name
       value: Camera_MouseControl
+      objectReference: {fileID: 0}
+    - target: {fileID: 3255980898995047448, guid: c0beee9ee57869d4985ac6c0b37b307e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0beee9ee57869d4985ac6c0b37b307e, type: 3}
