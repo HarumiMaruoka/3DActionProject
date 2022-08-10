@@ -1,3 +1,7 @@
+//*********************************************
+// 概　要：装備切替管理者
+// 作成者：ta.kusumoto
+// 作成日：2022/08/06
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,23 +9,18 @@ using UnityEngine.UI;
 
 public class EquipChangeManager : MonoBehaviour
 {
-    enum E_EQUIP_GROUP
-    {
-        Main,
-        Sub,
-    }
+    [Header("プレイヤーの攻撃アニメーションスクリプト")]
+    [SerializeField] private PlayerAttack _playerAttack;
     [Header("選択した装備アイコン")]
     [SerializeField] private Image[] _selectedIcon;
     [Header("選択中グループアイコン")]
     [SerializeField] private Image[] _selectingGroup;
-    [Header("装備グループ切替ボタン")]
-    [SerializeField] private Button[] _groupChangeButton;
     [Header("装備グループオブジェクト(Main or Sub")]
     [SerializeField] private GameObject[] _equipGroup;
     [Header("選択可能装備一覧")]
-    [SerializeField] private ChangeEquip[] _selectableEquipButton;
+    [SerializeField] private EquipChange[] _selectableEquipButton;
 
-    int[] _prevCommandID = new int[Constants.MAX_EQUIP_KIND];    // 前回のコマンドID
+    private int[] _prevCommandID = new int[Constants.MAX_EQUIP_KIND];    // 前回のコマンドID
 
     private void Start()
     {
@@ -32,9 +31,46 @@ public class EquipChangeManager : MonoBehaviour
             var button = equip.GetComponent<Button>();
             button.onClick.AddListener(() => SetSelectedEquip(equip.CommandID));
         }
+    }
 
-        foreach(var equip in _groupChangeButton) {
-            equip.onClick.AddListener(EqupGroupChange);
+    private void Update()
+    {
+        int group = Constants.EQUIP_GROUP_MAX;
+        if(Input.GetKey("joystick button 5")) {
+            // RBボタン
+            Debug.Log("RBボタン");
+            group = Constants.EQUIP_GROUP_MAIN;
+        }else if((int)Input.GetAxis("Trigger") > 0) {
+            // RTボタン
+            Debug.Log("RTボタン");
+            group = Constants.EQUIP_GROUP_SUB;
+        }
+        if(group == Constants.EQUIP_GROUP_MAX) { return; }
+
+        // 選択グループの切り替え
+        EqupGroupChange(group);
+
+        // 武器選択
+        int selectButton = Constants.EQUIP_SELECT_MAX;
+        if(Input.GetKeyDown("joystick button 0")) {
+            Debug.Log("Aボタン");
+            selectButton = Constants.EQUIP_SELECT_DOWN;
+        }else if(Input.GetKeyDown("joystick button 1")) {
+            Debug.Log("Bボタン");
+            selectButton = Constants.EQUIP_SELECT_RIGHT;
+        }else if(Input.GetKeyDown("joystick button 3")) {
+            Debug.Log("Yボタン");
+            selectButton = Constants.EQUIP_SELECT_UP;
+        }else if(Input.GetKeyDown("joystick button 2")) {
+            Debug.Log("Xボタン");
+            selectButton = Constants.EQUIP_SELECT_LEFT;
+        }
+
+        // 選択したボタンの処理を呼び出す
+        if(selectButton != Constants.EQUIP_SELECT_MAX) {
+            var commandID = selectButton + group * Constants.EQUIP_SELECT_MAX;
+            var button = _selectableEquipButton[commandID].GetComponent<Button>();
+            button.onClick.Invoke();
         }
     }
 
@@ -43,24 +79,25 @@ public class EquipChangeManager : MonoBehaviour
     private void SetSelectedEquip(int commandID)
     {
         Debug.Log($"選択したコマンドID：{commandID}");
-        var kind = (int)(IsMainGroup ? E_EQUIP_GROUP.Main : E_EQUIP_GROUP.Sub);
+        var kind = (int)(IsMainGroup ? Constants.EQUIP_GROUP_MAIN : Constants.EQUIP_GROUP_SUB);
         // 選択した装備アイコンを設定
         var equipInfo = GameManager.Instance.GetEquipInfo(commandID);
         _selectedIcon[kind].sprite = equipInfo.icon;
 
         if (_prevCommandID[kind] == commandID) { return; }
 
-        // 選択中の装備を明示的に分かるように色を変更
-        SelectingColor(commandID, _prevCommandID[kind]);
-        _prevCommandID[kind] = commandID;
-    }
+        // 装備IDをプレイヤー側に渡す
+        //if(kind == Constants.EQUIP_GROUP_MAIN) {
+        //    _playerAttack.Set_CurrentlyEquippedMainWeaponID(equipInfo.id);
+        //} else {
+        //    _playerAttack.Set_CurrentlyEquippedSubWeaponID(equipInfo.id);
+        //}
 
-    //******************************
-    // 選択中カラー
-    private void SelectingColor(int currentID, int prevID)
-    {
-        _selectableEquipButton[currentID].gameObject.GetComponent<Image>().color = Color.cyan;
-        if (prevID >= 0) { _selectableEquipButton[prevID].gameObject.GetComponent<Image>().color = Color.white; }
+        // 選択中の装備を明示的に分かるように色を変更
+        _selectableEquipButton[commandID].gameObject.GetComponent<Image>().color = Color.cyan;
+        if (_prevCommandID[kind] >= 0) { _selectableEquipButton[_prevCommandID[kind]].gameObject.GetComponent<Image>().color = Color.white; }
+
+        _prevCommandID[kind] = commandID;
     }
 
     //******************************
@@ -70,8 +107,8 @@ public class EquipChangeManager : MonoBehaviour
         string colorCode = "#FF00FF";
         Color color = default(Color);
         if (ColorUtility.TryParseHtmlString(colorCode, out color)) {
-            var currentKind = (int)(IsMainGroup ? E_EQUIP_GROUP.Main : E_EQUIP_GROUP.Sub);
-            var prevKind = (int)(IsMainGroup ? E_EQUIP_GROUP.Sub : E_EQUIP_GROUP.Main);
+            var currentKind = IsMainGroup ? Constants.EQUIP_GROUP_MAIN : Constants.EQUIP_GROUP_SUB;
+            var prevKind = IsMainGroup ? Constants.EQUIP_GROUP_SUB : Constants.EQUIP_GROUP_MAIN;
             _selectingGroup[currentKind].color = color;
             _selectingGroup[prevKind].color = Color.white;
         } else {
@@ -81,20 +118,21 @@ public class EquipChangeManager : MonoBehaviour
 
     //******************************
     // 装備グループの切り替え
-    public void EqupGroupChange()
+    private void EqupGroupChange(int group)
     {
-        if (_equipGroup[(int)E_EQUIP_GROUP.Main].gameObject.activeSelf) {
-            _equipGroup[(int)E_EQUIP_GROUP.Main].SetActive(false);
-            _equipGroup[(int)E_EQUIP_GROUP.Sub].SetActive(true);
+        if (group == Constants.EQUIP_GROUP_MAIN) {
+            _equipGroup[Constants.EQUIP_GROUP_MAIN].SetActive(true);
+            _equipGroup[Constants.EQUIP_GROUP_SUB].SetActive(false);
         } else {
-            _equipGroup[(int)E_EQUIP_GROUP.Main].SetActive(true);
-            _equipGroup[(int)E_EQUIP_GROUP.Sub].SetActive(false);
+            _equipGroup[Constants.EQUIP_GROUP_MAIN].SetActive(false);
+            _equipGroup[Constants.EQUIP_GROUP_SUB].SetActive(true);
         }
 
+        // 選択装備グループ
         SelectingEquipGroup();
     }
 
     //******************************
     // メイングループが有効化
-    private bool IsMainGroup { get => _equipGroup[(int)E_EQUIP_GROUP.Main].gameObject.activeSelf; }
+    private bool IsMainGroup { get => _equipGroup[Constants.EQUIP_GROUP_MAIN].gameObject.activeSelf; }
 }

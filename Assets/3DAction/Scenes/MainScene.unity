@@ -1281,14 +1281,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 794090329}
-  - component: {fileID: 794090330}
   m_Layer: 5
   m_Name: TestEquipChange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &794090329
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1311,20 +1310,6 @@ RectTransform:
   m_AnchoredPosition: {x: 720, y: 138}
   m_SizeDelta: {x: 320, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &794090330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 794090328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093e26f0f474d5246be1f1134d4e23ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _equipClose: {fileID: 0}
-  _settingDialog: {fileID: 0}
 --- !u!224 &798372242 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1261862740521864156, guid: b69555d8430187644ab1543e35e11b9f, type: 3}
@@ -1466,14 +1451,13 @@ GameObject:
   - component: {fileID: 875898829}
   - component: {fileID: 875898828}
   - component: {fileID: 875898827}
-  - component: {fileID: 875898826}
   m_Layer: 5
   m_Name: TestBackScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &875898825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1495,20 +1479,6 @@ RectTransform:
   m_AnchoredPosition: {x: 720, y: 50}
   m_SizeDelta: {x: 320, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &875898826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875898824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093e26f0f474d5246be1f1134d4e23ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _equipClose: {fileID: 0}
-  _settingDialog: {fileID: 0}
 --- !u!114 &875898827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1553,7 +1523,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 875898826}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TestScript, Assembly-CSharp
         m_MethodName: BackScene
         m_Mode: 1
@@ -1753,15 +1723,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb5b89bcd525c24d92ce2c649488484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerAttack: {fileID: 368674906}
   _selectedIcon:
   - {fileID: 273664992}
   - {fileID: 408245058}
   _selectingGroup:
   - {fileID: 1282749498}
   - {fileID: 231674248}
-  _groupChangeButton:
-  - {fileID: 461198337}
-  - {fileID: 1472970828}
   _equipGroup:
   - {fileID: 1060369028}
   - {fileID: 976887812}
@@ -2539,7 +2507,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1493712601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.024785856, y: 2.971384, z: -4.5}
+  m_LocalPosition: {x: -0.019244164, y: 2.971384, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3468,7 +3436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079297569584290586, guid: f4495bd12ae08bb46b3f42de9e35e7f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.46032673
+      value: 0.4658684
       objectReference: {fileID: 0}
     - target: {fileID: 9079297569584290586, guid: f4495bd12ae08bb46b3f42de9e35e7f3, type: 3}
       propertyPath: m_LocalPosition.y
