@@ -41,10 +41,17 @@ public class EnemyBase : MonoBehaviour
     }
     /// <summary> 攻撃のヒット関数。プレイヤーのOnCollision()やOnTrigger()から呼び出す。 : オーバーライド可 </summary>
     /// <param name="damage"> ダメージ量 </param>
+    /// <param name="stiffeningTime"> 硬直時間 </param>
+    public virtual void HitAttack(int damage, float stiffeningTime)
+    {
+
+    }
+    /// <summary> 攻撃のヒット関数。プレイヤーのOnCollision()やOnTrigger()から呼び出す。 : オーバーライド可 </summary>
+    /// <param name="damage"> ダメージ量 </param>
     /// <param name="knockbackDirection"> ノックバック方向 </param>
     /// <param name="knockbackPower"> ノックバック威力 </param>
     /// <param name="stiffeningTime"> 硬直時間 </param>
-    public virtual void HitAttack(int damage, Vector3 knockbackDirection, float knockbackPower,float stiffeningTime)
+    public virtual void HitAttack(int damage, Vector3 knockbackDirection, float knockbackPower, float stiffeningTime)
     {
 
     }
