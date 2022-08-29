@@ -11,7 +11,7 @@ public class TestEnemy01 : EnemyBase
     //<===== Unityメッセージ =====>//
     void Update()
     {
-        if (_status._hitPoint < 0f)
+        if (_status._hitPoint < 1f)
         {
             Debug.Log($"体力がなくなったのでやられました。{gameObject.name}");
             Destroy(gameObject);

@@ -14,10 +14,15 @@ public class PlayerAttack : MonoBehaviour
     [Header("InputManager < AxesName > : Fire1ボタンの名前"), SerializeField] string _fire1ButtonName = "Fire1";
     [Header("InputManager < AxesName > : Fire2ボタンの名前"), SerializeField] string _fire2ButtonName = "Fire2";
 
-    [Header("Animator < ParameterName > : 現在装着しているメインウエポンのID int Parameter Name"), SerializeField] string _animParameterName_int_MainWeaponID = "MainWeaponID";
-    [Header("Animator < ParameterName > : 現在装着しているサブウエポンのID   int Parameter Name"), SerializeField] string _animParameterName_int_SubWeaponID = "SubWeaponID";
-    [Header("Animator < ParameterName > : 攻撃するかどうかを表すメインウエポンの真偽値 bool Parameter Name"), SerializeField] string _animParameterName_bool_MainWeaponName = "IsFire1";
-    [Header("Animator < ParameterName > : 攻撃するかどうかを表すサブウエポンのの真偽値 bool Parameter Name"), SerializeField] string _animParameterName_bool_SubWeaponName = "IsFire2";
+    [Header("Animator < ParameterName > : 現在装着しているメインウエポンのID int Parameter Name"), SerializeField]
+    string _animParameterName_int_MainWeaponID = "MainWeaponID";
+    [Header("Animator < ParameterName > : 現在装着しているサブウエポンのID   int Parameter Name"), SerializeField]
+    string _animParameterName_int_SubWeaponID = "SubWeaponID";
+    [Header("Animator < ParameterName > : 攻撃するかどうかを表すメインウエポンの真偽値 bool Parameter Name"), SerializeField]
+    string _animParameterName_bool_MainWeaponName = "IsFire1";
+    [Header("Animator < ParameterName > : 攻撃するかどうかを表すサブウエポンのの真偽値 bool Parameter Name")]
+    [SerializeField]
+    string _animParameterName_bool_SubWeaponName = "IsFire2";
 
     /// <summary> Fire1押下時に実行するデリゲート変数。 </summary>
     public static System.Action On_Fire1ButtonDown;
@@ -41,8 +46,6 @@ public class PlayerAttack : MonoBehaviour
     /// <summary> Fire2押下を検知する変数 : 押下中ずっとtrue </summary>
     bool _inputFire2Button;
 
-    //<***************** メンバー関数 *****************>//
-
     //<***************** Unityメッセージ *****************>//
     void Start()
     {
@@ -55,8 +58,7 @@ public class PlayerAttack : MonoBehaviour
         Update_AttackAnim();
     }
 
-    //<***************** publicメソッド *****************>//
-
+    //<***************** publicメンバー関数 *****************>//
     /// <summary> 着用しているメイン装備IDを設定する。 </summary>
     /// <param name="value"> 新しいID </param>
     public void Set_CurrentlyEquippedMainWeaponID(int value)
@@ -70,8 +72,7 @@ public class PlayerAttack : MonoBehaviour
         _currentlyEquippedSubWeaponID = value;
     }
 
-    //<***************** privateメソッド *****************>//
-
+    //<***************** privateメンバー関数 *****************>//
     /// <summary> 初期化処理 </summary>
     void Initialized()
     {

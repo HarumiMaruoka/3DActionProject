@@ -12,7 +12,7 @@ public class EnemyBase : MonoBehaviour
 {
     //<===== メンバー変数 =====>//
     [Header("このキャラのステータス"), SerializeField] protected EnemyStatus _status;
-    public EnemyStatus Status { get => _status; }
+    public EnemyStatus Status { get => _status; set => _status = value; }
     protected bool _isMove;
     protected Rigidbody _rigidbody;
 
