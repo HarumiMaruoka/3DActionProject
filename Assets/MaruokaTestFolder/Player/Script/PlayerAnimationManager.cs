@@ -2,72 +2,66 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> プレイヤーのアニメーションを管理するクラス </summary>
+/// <summary> 
+/// プレイヤーのアニメーションを管理するクラス。
+/// 基本行動アニメーションはこのクラスで管理するが、攻撃遷移はAttackで行う。
+/// </summary>
 public class PlayerAnimationManager : MonoBehaviour
 {
-    // <===== このクラスで使用する変数 =====>//
+    // <=========== メンバー変数･プロパティ ===========>//
     // ===== アニメーション関連 ===== //
-    /// <summary> プレイヤーに付与されているアニメーターコンポーネント </summary>
+    /// <summary> プレイヤーにアタッチされているアニメーターコンポーネント </summary>
     Animator _animator;
     /// <summary> プレイヤーのステートを管理するクラス </summary>
     PlayerStateManager _playerStateManager;
     /// <summary> プレイヤーの動きを検知するクラス。このクラスでは接地しているかどうかを判断する為に使用する。 </summary>
     PlayerMove _playerMove;
-    /// <summary> 接地しているかどうか </summary>
-    bool _isGround = true;
     /// <summary> Run中かどうか </summary>
     bool _isRun = false;
     /// <summary> Jumpしたかどうか </summary>
     bool _isJumpTrigger = false;
-    /// <summary> Fire1攻撃したかどうか </summary>
-    bool _isFire1Trigger = false;
-    /// <summary> Fire2攻撃したかどうか </summary>
-    bool _isFire2Trigger = false;
 
+    //<========== Uniytメッセージ ==========>//
     void Start()
     {
-        _animator = GetComponent<Animator>();
-        _playerStateManager = GetComponent<PlayerStateManager>();
-        _playerMove = GetComponent<PlayerMove>();
+        Initialized();
     }
-
     void Update()
     {
-        Set_AnimValueALL_False();
-        Update_AnimValue();
-        Update_AnimParameters();
+        Set_AnimParameterALL_False();
+        Update_AnimParameter();
+        Update_AnimParameterALL();
     }
 
-    /// <summary> アニメーション用変数を全てfalseでセットする。 </summary>
-    void Set_AnimValueALL_False()
+    //<========== privateメンバー関数 ==========>//
+    /// <summary> このコンポーネントの初期化関数 </summary>
+    void Initialized()
+    {
+        // コンポーネントを取得
+        if (!(_animator = GetComponent<Animator>())) Debug.LogError($"Animatorコンポーネントがアタッチされていません。 : {gameObject.name}");
+        if (!(_playerStateManager = GetComponent<PlayerStateManager>())) Debug.LogError($"PlayerStateManagerコンポーネントがアタッチされていません。 : {gameObject.name}");
+        if (!(_playerMove = GetComponent<PlayerMove>())) Debug.LogError($"PlayerMoverコンポーネントがアタッチされていません。 : {gameObject.name}");
+    }
+    /// <summary> アニメーション用変数を全てfalseに設定する。 </summary>
+    void Set_AnimParameterALL_False()
     {
         _isRun = false;
         _isJumpTrigger = false;
-        //_isFire1Trigger = false;
-        //_isFire2Trigger = false;
-        _isGround = false;
     }
-
-    void Update_AnimValue()
+    /// <summary> プレイヤーステートを基に、アニメーションパラメータを更新する </summary>
+    void Update_AnimParameter()
     {
-
         switch (_playerStateManager.PlayerState)
         {
             case PlayerStateManager.PlayerStateEnum.Run: _isRun = true; break;
             case PlayerStateManager.PlayerStateEnum.Jump: _isJumpTrigger = true; break;
-            //case PlayerStateManager.PlayerStateEnum.Fire1: _isFire1Trigger = true; break;
-            //case PlayerStateManager.PlayerStateEnum.Fire2: _isFire2Trigger = true; break;
         }
     }
-
     /// <summary> プレイヤーステートをアニメーションに反映する。 </summary>
-    void Update_AnimParameters()
+    void Update_AnimParameterALL()
     {
         _animator.SetBool("IsRun", _isRun);
         _animator.SetBool("IsGround", _playerMove.Get_IsGround());
-
         _animator.SetBool("IsJump", _isJumpTrigger);
-        //_animator.SetBool("IsFire1", _isFire1Trigger);
-        //_animator.SetBool("IsFire2", _isFire2Trigger);
     }
 }

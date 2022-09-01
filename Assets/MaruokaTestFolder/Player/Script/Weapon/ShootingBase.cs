@@ -9,18 +9,23 @@ using UnityEngine;
 /// </summary>
 public class ShootingBase : WeaponBase
 {
-    protected override void Init(bool pressType, bool isMainWeapon)
+    /// <summary> 射撃方法を表す型 </summary>
+    [System.Serializable]
+    public enum ShootingType
     {
-        base.Init(pressType, isMainWeapon);
+        /// <summary> 直線 </summary>
+        Straight,
+        /// <summary> 範囲 </summary>
+        Range,
     }
 
-    void Start()
-    {
-        
-    }
+    /// <summary> この武器の射撃タイプ </summary>
+    protected ShootingType _shootingType;
 
-    void Update()
+    protected override bool InitWeapon(bool pressType, bool isMainWeapon, ShootingType shootingType)
     {
-        
+        base.InitWeapon(pressType, isMainWeapon);
+        _shootingType = shootingType;
+        return true;
     }
 }
