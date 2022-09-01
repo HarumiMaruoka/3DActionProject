@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class EquipChangeManager : MonoBehaviour
 {
-    [Header("プレイヤーの攻撃アニメーションスクリプト")]
+    [Header("プレイヤー攻撃アニメーションスクリプト")]
     [SerializeField] private PlayerAttack _playerAttack;
     [Header("選択した装備アイコン")]
     [SerializeField] private Image[] _selectedIcon;
